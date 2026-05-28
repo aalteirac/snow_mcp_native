@@ -1,6 +1,6 @@
 # Native App for Snowflake Cortex Agents with External MCP Server
 
-A Snowflake Native App that connects to an external **MCP server** and exposes all of its MCP tools (59+) to a **Cortex Agent**. Users interact with the external service through natural language via Snowflake Intelligence.
+A Snowflake Native App that connects to an external **MCP server** and exposes all of its MCP tools to a **Cortex Agent**. Users interact with the external service through natural language via Snowflake Intelligence.
 
 ## How It Works
 
@@ -9,11 +9,11 @@ The app uses a single stored procedure (`internal._mcp_call`) that:
 1. Authenticates to the external service via **OAuth2 client credentials** (machine token)
 2. Resolves the calling Snowflake user (captured by Streamlit via `st.experimental_user`) and looks up their **external subject ID** in the `internal.user_subject_map` mapping table
 3. Exchanges the M2M token for a **user-scoped token** via OAuth Token Exchange (RFC 8693), using `urn:oauth:user-impersonation` with `user_lookup.field = subject`
-4. Calls the **MCP server** (`https://<tenant>/api/ai/mcp`) using JSON-RPC with the user-scoped token
+4. Calls the **MCP server** (`https://<tenant>/mcp`) using JSON-RPC with the user-scoped token
 
 This means each Snowflake user calling the agent acts as their mapped external user (respecting their permissions, spaces, role-based access, etc.). Mappings are managed from the Configuration tab in the Streamlit UI.
 
-The Cortex Agent has one generic tool (`mcp_call`) that can invoke any of the 59+ MCP tools by name (e.g., `search`, `describe_app`, `get_fields`, `create_sheet`, etc.).
+The Cortex Agent has one generic tool (`mcp_call`) that can invoke any of the  MCP tools by name.
 
 ## Prerequisites
 
