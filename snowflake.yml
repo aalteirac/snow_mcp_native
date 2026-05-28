@@ -1,0 +1,21 @@
+definition_version: 2
+entities:
+  mcp_app_pkg:
+    type: application package
+    stage: app.stage
+    manifest: app/manifest.yml
+    artifacts:
+      - src: app/*
+        dest: ./
+    meta:
+      role: ACCOUNTADMIN
+      warehouse: DEMO_WH
+  mcp_app:
+    type: application
+    identifier:
+      name: mcp_app
+    from:
+      target: mcp_app_pkg
+    meta:
+      role: ACCOUNTADMIN
+      warehouse: DEMO_WH

@@ -1,0 +1,55 @@
+manifest_version: 2
+
+version:
+  name: mcp_app
+  label: "MCP Tools for Cortex Agents"
+  comment: "Native App exposing external MCP server tools for Snowflake Cortex Agent integration"
+
+artifacts:
+  setup_script: sql/init.sql
+  readme: README.md
+  default_streamlit: tools.mcp_agent_ui
+  extension_code: true
+
+privileges:
+  - IMPORTED PRIVILEGES ON SNOWFLAKE DB:
+      description: "Privilege to run agent in the Native App"
+
+
+references:
+  - MCP_CLIENT_ID:
+      label: "OAuth Client ID"
+      description: "Secret containing your OAuth2 Client ID"
+      privileges:
+        - READ
+      object_type: SECRET
+      register_callback: setup.register_reference
+      configuration_callback: setup.get_configuration_for_reference
+      required_at_setup: true
+  - MCP_CLIENT_SECRET:
+      label: "OAuth Client Secret"
+      description: "Secret containing your OAuth2 Client Secret"
+      privileges:
+        - READ
+      object_type: SECRET
+      register_callback: setup.register_reference
+      configuration_callback: setup.get_configuration_for_reference
+      required_at_setup: true
+  - MCP_EXTERNAL_ACCESS:
+      label: "MCP Server External Access"
+      description: "Required to connect to the external MCP server endpoints"
+      privileges:
+        - USAGE
+      object_type: EXTERNAL ACCESS INTEGRATION
+      register_callback: setup.register_reference
+      configuration_callback: setup.get_configuration_for_reference
+
+configuration:
+  log_level: INFO
+
+restricted_callers_rights:
+  enabled: true
+  description: "Used to capture the invoking user's identity for impersonation."
+
+lifecycle_callbacks:
+  version_initializer: setup.version_init
